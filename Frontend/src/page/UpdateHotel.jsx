@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import HotelCard from "../components/HotelCard";
+import { SkeletonGrid } from "../components/SkeletonCard";
 import { deleteHotelById, getVisibleHotels } from "../hotelsStore";
 import "./UpdateHotel.css";
 import { Helmet } from "react-helmet-async";
@@ -10,11 +11,13 @@ import { API_BASE_URL, getImageUrl } from "../apiConfig";
 
 const UpdateHotel = ({ deleteOnly = false }) => {
   const navigate = useNavigate();
-  const [hotels, setHotels] = useState(() => getVisibleHotels());
+  const [hotels, setHotels] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [successPopup, setSuccessPopup] = useState("");
   const [loadError, setLoadError] = useState("");
 
   const loadHotels = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/hotels`);
       if (!response.ok) {
@@ -42,6 +45,8 @@ const UpdateHotel = ({ deleteOnly = false }) => {
       console.error("Error fetching hotels:", error);
       setHotels(getVisibleHotels());
       setLoadError("Could not load hotels from the server.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,7 +132,9 @@ const UpdateHotel = ({ deleteOnly = false }) => {
 
           {loadError ? <p className="hotel-empty">{loadError}</p> : null}
 
-          {hotels.length === 0 ? (
+          {isLoading ? (
+            <SkeletonGrid count={3} />
+          ) : hotels.length === 0 ? (
             <div className="hotel-empty">
               <h3>No hotels to manage</h3>
               <p>Add a hotel first, then you can update or delete it here.</p>

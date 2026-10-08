@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import HotelMap from "./HotelMap";
 import { formatPrice, getVisibleHotels } from "../hotelsStore";
 import "./view.css";
+import "../components/SkeletonCard.css";
 import { Helmet } from "react-helmet-async";
 import { API_BASE_URL, getImageUrl } from "../apiConfig";
 
@@ -57,7 +58,30 @@ const View = () => {
   }, [id]);
 
   if (isLoading) {
-    return null;
+    return (
+      <div className="page">
+        <Nav />
+        <main className="hotel-view">
+          <div className="hotel-view-layout">
+            <article className="hotel-view-card" style={{ overflow: "hidden" }}>
+              <div className="skeleton-img skeleton-shimmer" style={{ height: "360px" }}></div>
+              <div className="skeleton-body" style={{ padding: "24px" }}>
+                <div className="skeleton-line skeleton-title skeleton-shimmer" style={{ width: "60%", height: "28px" }}></div>
+                <div className="skeleton-line skeleton-subtitle skeleton-shimmer" style={{ width: "35%" }}></div>
+                <div className="skeleton-line skeleton-desc-1 skeleton-shimmer" style={{ height: "16px", marginTop: "12px" }}></div>
+                <div className="skeleton-line skeleton-desc-2 skeleton-shimmer" style={{ height: "16px" }}></div>
+                <div className="skeleton-line skeleton-price skeleton-shimmer" style={{ width: "25%", height: "24px", marginTop: "16px" }}></div>
+              </div>
+            </article>
+            <aside className="hotel-map-wrap">
+              <h2>Map</h2>
+              <div className="skeleton-img skeleton-shimmer" style={{ height: "300px", borderRadius: "12px" }}></div>
+            </aside>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   if (!hotel) {

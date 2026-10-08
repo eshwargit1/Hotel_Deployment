@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Hotellist.css";
 import HotelCard from "./HotelCard";
+import { SkeletonGrid } from "./SkeletonCard";
 
 const PAGE_SIZE = 3;
 
@@ -38,10 +39,7 @@ const Hotellist = ({
       </div>
 
       {isLoading ? (
-        <div className="hotel-empty" style={{ padding: "40px" }}>
-          <h3>Loading hotels...</h3>
-          <p>Connecting to database and fetching listings.</p>
-        </div>
+        <SkeletonGrid count={3} />
       ) : errorMessage ? (
         <div className="hotel-empty" style={{ padding: "40px" }}>
           <h3>Could not connect to backend server</h3>

@@ -1,0 +1,125 @@
+.skeleton-grid {
+  width: 100%;
+}
+
+.skeleton-status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(8, 112, 200, 0.08), rgba(2, 132, 199, 0.03));
+  border: 1px solid rgba(8, 112, 200, 0.18);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  color: #0b2b48;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+}
+
+.skeleton-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(8, 112, 200, 0.25);
+  border-top-color: #0870c8;
+  border-radius: 50%;
+  animation: skeleton-spin 0.75s linear infinite;
+}
+
+@keyframes skeleton-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skeleton-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 200px;
+}
+
+.skeleton-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-line {
+  border-radius: 6px;
+  height: 14px;
+}
+
+.skeleton-title {
+  width: 70%;
+  height: 20px;
+}
+
+.skeleton-subtitle {
+  width: 45%;
+  height: 14px;
+}
+
+.skeleton-desc-1 {
+  width: 100%;
+  height: 12px;
+  margin-top: 4px;
+}
+
+.skeleton-desc-2 {
+  width: 85%;
+  height: 12px;
+}
+
+.skeleton-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.skeleton-price {
+  width: 35%;
+  height: 20px;
+}
+
+.skeleton-btn {
+  width: 90px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+/* Shimmer Effect */
+.skeleton-shimmer {
+  background: #e2e8f0;
+  background-image: linear-gradient(
+    90deg,
+    #e2e8f0 0px,
+    #f8fafc 40px,
+    #f1f5f9 80px,
+    #e2e8f0 120px
+  );
+  background-size: 600px 100%;
+  animation: skeleton-shimmer-anim 1.5s infinite linear forwards;
+}
+
+@keyframes skeleton-shimmer-anim {
+  0% {
+    background-position: -300px 0;
+  }
+  100% {
+    background-position: 300px 0;
+  }
+}
