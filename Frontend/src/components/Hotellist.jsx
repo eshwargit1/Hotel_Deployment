@@ -4,7 +4,12 @@ import HotelCard from "./HotelCard";
 
 const PAGE_SIZE = 3;
 
-const Hotellist = ({ hotels = [], isLoading = false }) => {
+const Hotellist = ({
+  hotels = [],
+  isLoading = false,
+  errorMessage = "",
+  onRetry = null,
+}) => {
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(hotels.length / PAGE_SIZE));
 
@@ -36,6 +41,29 @@ const Hotellist = ({ hotels = [], isLoading = false }) => {
         <div className="hotel-empty" style={{ padding: "40px" }}>
           <h3>Loading hotels...</h3>
           <p>Connecting to database and fetching listings.</p>
+        </div>
+      ) : errorMessage ? (
+        <div className="hotel-empty" style={{ padding: "40px" }}>
+          <h3>Could not connect to backend server</h3>
+          <p>{errorMessage}</p>
+          {onRetry && (
+            <button
+              type="button"
+              onClick={onRetry}
+              style={{
+                marginTop: "12px",
+                padding: "8px 20px",
+                backgroundColor: "#e65100",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: "600",
+              }}
+            >
+              Retry Connection
+            </button>
+          )}
         </div>
       ) : hotels.length === 0 ? (
         <div className="hotel-empty">

@@ -19,6 +19,8 @@ const Home = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [apiHotels, setApiHotels] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleResetFilters = () => {
     setSearchTerm("");
@@ -27,39 +29,48 @@ const Home = () => {
     setMaxPrice("");
   };
 
-  useEffect(() => {
+  const fetchHotels = () => {
+    setIsLoading(true);
+    setErrorMessage("");
+
     fetch(`${API_BASE_URL}/hotels`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Hotels request failed: ${response.status}`);
+          throw new Error(`Hotels request failed: ${response.status} ${response.statusText}`);
         }
         return response.json();
       })
       .then((rows) => {
-        const normalizedHotels = rows.map((hotel, index) => ({
-          id: hotel.id ?? hotel.hotel_id ?? `api-hotel-${index}`,
+        const normalizedHotels = (Array.isArray(rows) ? rows : []).map((hotel, index) => ({
+          id: String(hotel.id ?? hotel.hotel_id ?? `api-hotel-${index}`),
           hotelName: hotel.hotelName ?? hotel.hotel_name ?? hotel.name ?? "Unnamed hotel",
           location: hotel.location ?? hotel.address ?? "Salem",
           latitude: String(hotel.latitude ?? ""),
           longitude: String(hotel.longitude ?? ""),
           price: String(hotel.price ?? ""),
-          rating: String(hotel.rating ?? ""),
+          rating: String(hotel.rating ?? "8.0"),
           description: hotel.description ?? "",
           src: getImageUrl([hotel.src, hotel.image, hotel.image_url].find(Boolean) ?? ""),
           images: (hotel.images ?? []).map(getImageUrl),
         }));
         setApiHotels(normalizedHotels);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching hotels:", error);
+        setErrorMessage(error.message || "Failed to load hotels from server");
         setApiHotels([]);
+        setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchHotels();
   }, []);
 
-  const hotels = useMemo(
-    () => getVisibleHotels(apiHotels ?? []),
-    [apiHotels]
-  );
+  const hotels = useMemo(() => {
+    return getVisibleHotels(apiHotels ?? []);
+  }, [apiHotels]);
 
   const filteredHotels = useMemo(() => {
     return hotels.filter((hotel) => {
@@ -116,7 +127,12 @@ const Home = () => {
         onReset={handleResetFilters}
         />
       </section>
-      <Hotellist hotels={filteredHotels} isLoading={apiHotels === null} />
+      <Hotellist
+        hotels={filteredHotels}
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        onRetry={fetchHotels}
+      />
       <Footer />
     </div>
   );
