@@ -1,0 +1,125 @@
+.update-hotel-page {
+  flex: 1;
+  width: 100%;
+}
+
+.update-hotel-hero {
+  width: 100%;
+  min-height: 190px;
+  background-image: linear-gradient(rgba(0, 24, 69, 0.72), rgba(0, 24, 69, 0.72)),
+    url("../assets/banner.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.update-hotel-hero-inner {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 34px 20px;
+}
+
+.update-hotel-hero-inner .eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #febb02;
+  margin-bottom: 6px;
+}
+
+.update-hotel-hero-inner h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.update-hotel-hero-inner .lead {
+  margin-top: 8px;
+  max-width: 620px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e8f0ff;
+}
+
+.update-hotel-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+  width: 100%;
+}
+
+.update-hotel-page .hotel-list-head {
+  padding-left: 0;
+}
+
+.update-hotel-page .hotel-list-head::before {
+  display: none;
+}
+
+.update-hotel-page .hotel-list-head h2 {
+  font-size: 25px;
+}
+
+.delete-hotel-page .card-actions {
+  justify-content: flex-end;
+}
+
+.delete-hotel-page .card-bottom .btn-delete {
+  min-width: 104px;
+}
+
+.hotel-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 24, 69, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.hotel-popup {
+  width: min(420px, 100%);
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  padding: 20px 18px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.hotel-popup h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #008009;
+}
+
+.hotel-popup p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.hotel-popup button {
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  background: #0071c2;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hotel-popup button:hover {
+  background: #005999;
+}
+
+@media (max-width: 700px) {
+  .update-hotel-hero-inner h1 {
+    font-size: 24px;
+  }
+}
