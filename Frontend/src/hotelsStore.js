@@ -11,6 +11,7 @@ export function loadExtraHotels() {
   }
 }
 
+
 export function saveExtraHotel(hotel) {
   const next = [hotel, ...loadExtraHotels()];
   localStorage.setItem(EXTRA_HOTELS_KEY, JSON.stringify(next));
@@ -36,19 +37,34 @@ export function loadHotelUpdates() {
 }
 
 export function getVisibleHotels(seedHotels = []) {
+  if (Array.isArray(seedHotels) && seedHotels.length > 0) {
+    const updates = loadHotelUpdates();
+    return seedHotels.map((hotel) => {
+      const idKey = String(hotel.id);
+      return updates[idKey] || updates[hotel.id]
+        ? { ...hotel, ...(updates[idKey] || updates[hotel.id]) }
+        : hotel;
+    });
+  }
+
   const extras = loadExtraHotels();
-  const deleted = new Set(loadDeletedHotelIds());
+  const deleted = new Set(loadDeletedHotelIds().map(String));
   const updates = loadHotelUpdates();
   const seen = new Set();
   const list = [];
 
   for (const hotel of [...extras, ...seedHotels]) {
-    if (!hotel?.id || deleted.has(hotel.id) || seen.has(hotel.id)) {
+    const strId = String(hotel?.id ?? "");
+    if (!strId || deleted.has(strId) || seen.has(strId)) {
       continue;
     }
 
-    seen.add(hotel.id);
-    list.push(updates[hotel.id] ? { ...hotel, ...updates[hotel.id] } : hotel);
+    seen.add(strId);
+    list.push(
+      updates[strId] || updates[hotel.id]
+        ? { ...hotel, ...(updates[strId] || updates[hotel.id]) }
+        : hotel
+    );
   }
 
   return list;

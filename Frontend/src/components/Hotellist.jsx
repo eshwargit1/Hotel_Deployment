@@ -4,7 +4,7 @@ import HotelCard from "./HotelCard";
 
 const PAGE_SIZE = 3;
 
-const Hotellist = ({ hotels = [] }) => {
+const Hotellist = ({ hotels = [], isLoading = false }) => {
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(hotels.length / PAGE_SIZE));
 
@@ -22,19 +22,22 @@ const Hotellist = ({ hotels = [] }) => {
     window.scrollTo({ top: 320, behavior: "smooth" });
   };
 
-
-
   return (
     <section className="hotel-list">
       <div className="hotel-list-title-row">
         <div className="hotel-list-head">
-          <h2>Hotels in Salem</h2>
-          <p>Explore the best hotels in Salem with great amenities, comfort and value for money.</p>
+          <h2>Featured Hotels</h2>
+          <p>Explore the best hotels with great amenities, comfort and value for money.</p>
         </div>
         <a href="#hotel-list" className="view-all-hotels">View All Hotels <span>›</span></a>
       </div>
 
-      {hotels.length === 0 ? (
+      {isLoading ? (
+        <div className="hotel-empty" style={{ padding: "40px" }}>
+          <h3>Loading hotels...</h3>
+          <p>Connecting to database and fetching listings.</p>
+        </div>
+      ) : hotels.length === 0 ? (
         <div className="hotel-empty">
           <h3>No hotels found</h3>
           <p>

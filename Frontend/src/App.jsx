@@ -65,27 +65,28 @@ const Home = () => {
     return hotels.filter((hotel) => {
       if (searchTerm.trim()) {
         const query = searchTerm.toLowerCase().trim();
-        const matchesName = hotel.hotelName.toLowerCase().includes(query);
-        const matchesLocation = hotel.location.toLowerCase().includes(query);
+        const matchesName = (hotel.hotelName || "").toLowerCase().includes(query);
+        const matchesLocation = (hotel.location || "").toLowerCase().includes(query);
         if (!matchesName && !matchesLocation) {
           return false;
         }
       }
 
       if (selectedLocation) {
-        const locationQuery = selectedLocation.toLowerCase();
-        if (!hotel.location.toLowerCase().includes(locationQuery)) {
+        const locationQuery = selectedLocation.toLowerCase().trim();
+        if (!(hotel.location || "").toLowerCase().includes(locationQuery)) {
           return false;
         }
       }
 
-      const numericPrice = parseInt(hotel.price.replace(/[^0-9]/g, ""), 10);
+      const rawPrice = String(hotel.price || "").replace(/[^0-9]/g, "");
+      const numericPrice = rawPrice ? parseInt(rawPrice, 10) : 0;
 
-      if (minPrice && numericPrice < parseInt(minPrice, 10)) {
+      if (minPrice && numericPrice > 0 && numericPrice < parseInt(minPrice, 10)) {
         return false;
       }
 
-      if (maxPrice && numericPrice > parseInt(maxPrice, 10)) {
+      if (maxPrice && numericPrice > 0 && numericPrice > parseInt(maxPrice, 10)) {
         return false;
       }
 
@@ -115,7 +116,7 @@ const Home = () => {
         onReset={handleResetFilters}
         />
       </section>
-      <Hotellist hotels={filteredHotels} />
+      <Hotellist hotels={filteredHotels} isLoading={apiHotels === null} />
       <Footer />
     </div>
   );
