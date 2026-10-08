@@ -71,13 +71,8 @@ export function getVisibleHotels(seedHotels = []) {
 }
 
 export function deleteHotelById(id) {
-  const extras = loadExtraHotels().filter((hotel) => hotel.id !== id);
+  const extras = loadExtraHotels().filter((hotel) => String(hotel.id) !== String(id));
   localStorage.setItem(EXTRA_HOTELS_KEY, JSON.stringify(extras));
-
-  const deleted = loadDeletedHotelIds();
-  if (!deleted.includes(id)) {
-    localStorage.setItem(DELETED_HOTELS_KEY, JSON.stringify([...deleted, id]));
-  }
 
   const updates = loadHotelUpdates();
   if (updates[id]) {
