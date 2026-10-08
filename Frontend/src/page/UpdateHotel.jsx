@@ -6,14 +6,7 @@ import HotelCard from "../components/HotelCard";
 import { deleteHotelById, getVisibleHotels } from "../hotelsStore";
 import "./UpdateHotel.css";
 import { Helmet } from "react-helmet-async";
-
-const toImageUrl = (imagePath) => {
-  if (!imagePath || imagePath.startsWith("data:") || imagePath.startsWith("http")) {
-    return imagePath || "";
-  }
-
-  return `http://localhost:5000${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
-};
+import { API_BASE_URL, getImageUrl } from "../apiConfig";
 
 const UpdateHotel = ({ deleteOnly = false }) => {
   const navigate = useNavigate();
@@ -23,7 +16,7 @@ const UpdateHotel = ({ deleteOnly = false }) => {
 
   const loadHotels = async () => {
     try {
-      const response = await fetch("http://localhost:5000/hotels");
+      const response = await fetch(`${API_BASE_URL}/hotels`);
       if (!response.ok) {
         throw new Error("Could not load hotels");
       }
@@ -38,8 +31,8 @@ const UpdateHotel = ({ deleteOnly = false }) => {
         price: String(hotel.price ?? ""),
         rating: String(hotel.rating ?? ""),
         description: hotel.description ?? "",
-        src: toImageUrl(hotel.src ?? hotel.image ?? hotel.image_url ?? ""),
-        images: (hotel.images ?? []).map(toImageUrl),
+        src: getImageUrl(hotel.src ?? hotel.image ?? hotel.image_url ?? ""),
+        images: (hotel.images ?? []).map(getImageUrl),
         source: "api",
       }));
 
@@ -75,7 +68,7 @@ const UpdateHotel = ({ deleteOnly = false }) => {
     const deleteHotel = async () => {
       try {
         if (hotel.source === "api") {
-          const response = await fetch(`http://localhost:5000/hotels/${hotel.id}`, {
+          const response = await fetch(`${API_BASE_URL}/hotels/${hotel.id}`, {
             method: "DELETE",
           });
           if (!response.ok) {

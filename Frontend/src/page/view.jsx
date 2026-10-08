@@ -6,6 +6,7 @@ import HotelMap from "./HotelMap";
 import { formatPrice, getVisibleHotels } from "../hotelsStore";
 import "./view.css";
 import { Helmet } from "react-helmet-async";
+import { API_BASE_URL, getImageUrl } from "../apiConfig";
 
 const View = () => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const View = () => {
   useEffect(() => {
     let isMounted = true;
 
-    fetch("http://localhost:5000/hotels")
+    fetch(`${API_BASE_URL}/hotels`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Hotels request failed: ${response.status}`);
@@ -32,11 +33,8 @@ const View = () => {
           price: String(item.price ?? ""),
           rating: String(item.rating ?? ""),
           description: item.description ?? "",
-          src: [item.src, item.image, item.image_url].find(Boolean)?.replace(
-            /^\/(uploads\/)/,
-            "http://localhost:5000/$1"
-          ) ?? "",
-          images: item.images ?? [],
+          src: getImageUrl([item.src, item.image, item.image_url].find(Boolean) ?? ""),
+          images: (item.images ?? []).map(getImageUrl),
         }));
 
         if (isMounted) {

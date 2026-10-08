@@ -11,6 +11,7 @@ import {
   updateHotelById,
 } from "../hotelsStore";
 import "./AddHotel.css";
+import { API_BASE_URL, getImageUrl } from "../apiConfig";
 
 const emptyForm = {
   hotelName: "",
@@ -22,13 +23,7 @@ const emptyForm = {
   longitude: "78.1460",
 };
 
-const toImageUrl = (imagePath) => {
-  if (!imagePath || imagePath.startsWith("data:") || imagePath.startsWith("http")) {
-    return imagePath || "";
-  }
-
-  return `http://localhost:5000${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
-};
+const toImageUrl = (imagePath) => getImageUrl(imagePath);
 
 const AddHotel = () => {
   const navigate = useNavigate();
@@ -62,7 +57,7 @@ const AddHotel = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/hotels");
+        const response = await fetch(`${API_BASE_URL}/hotels`);
         if (!response.ok) {
           throw new Error("Could not load hotel");
         }
@@ -277,7 +272,7 @@ const AddHotel = () => {
         selectedFiles.forEach((file) => payload.append("images", file));
 
         try {
-          const response = await fetch(`http://localhost:5000/hotels/${editHotel.id}`, {
+          const response = await fetch(`${API_BASE_URL}/hotels/${editHotel.id}`, {
             method: "PUT",
             body: payload,
           });
@@ -308,7 +303,7 @@ const AddHotel = () => {
     selectedFiles.forEach((file) => payload.append("images", file));
 
     try {
-      const response = await fetch("http://localhost:5000/hotels", {
+      const response = await fetch(`${API_BASE_URL}/hotels`, {
         method: "POST",
         body: payload,
       });

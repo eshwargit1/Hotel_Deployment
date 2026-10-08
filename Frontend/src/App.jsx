@@ -11,6 +11,7 @@ import AddHotel from "./page/AddHotel";
 import UpdateHotel from "./page/UpdateHotel";
 import { getVisibleHotels } from "./hotelsStore";
 import { Helmet } from "react-helmet-async";
+import { API_BASE_URL, getImageUrl } from "./apiConfig";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +28,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/hotels")
+    fetch(`${API_BASE_URL}/hotels`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Hotels request failed: ${response.status}`);
@@ -44,11 +45,8 @@ const Home = () => {
           price: String(hotel.price ?? ""),
           rating: String(hotel.rating ?? ""),
           description: hotel.description ?? "",
-          src: [hotel.src, hotel.image, hotel.image_url].find(Boolean)?.replace(
-            /^\/(uploads\/)/,
-            "http://localhost:5000/$1"
-          ) ?? "",
-          images: hotel.images ?? [],
+          src: getImageUrl([hotel.src, hotel.image, hotel.image_url].find(Boolean) ?? ""),
+          images: (hotel.images ?? []).map(getImageUrl),
         }));
         setApiHotels(normalizedHotels);
       })
